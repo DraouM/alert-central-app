@@ -21,14 +21,18 @@ export default function LoginPage() {
     const email = (document.getElementById('email') as HTMLInputElement).value;
     
     let role: 'admin' | 'supervisor' | 'dispatcher' = 'dispatcher';
+    let name = "Dispatcher User";
+
     if (email.includes('admin')) {
       role = 'admin';
+      name = "Admin User";
     } else if (email.includes('supervisor')) {
       role = 'supervisor';
+      name = "Supervisor User";
     }
 
     login({
-      name: "Logged In User",
+      name: name,
       email: email,
       role: role,
     });
@@ -37,8 +41,18 @@ export default function LoginPage() {
 
   return (
     <main className="w-full min-h-screen lg:grid lg:grid-cols-2">
+       <div className="hidden bg-muted lg:block">
+        <Image
+          src="https://placehold.co/1920x1080.png"
+          alt="Image"
+          width="1920"
+          height="1080"
+          className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+          data-ai-hint="city operations center"
+        />
+      </div>
       <div className="flex items-center justify-center py-12">
-        <div className="mx-auto grid w-[350px] gap-6">
+        <div className="mx-auto grid w-[400px] gap-6 p-6">
           <div className="grid gap-2 text-center">
             <Logo className="h-12 w-12 text-primary mx-auto" />
             <h1 className="text-3xl font-bold">{APP_NAME}</h1>
@@ -94,16 +108,6 @@ export default function LoginPage() {
             </CardContent>
           </Card>
         </div>
-      </div>
-      <div className="hidden bg-muted lg:block">
-        <Image
-          src="https://placehold.co/1920x1080.png"
-          alt="Image"
-          width="1920"
-          height="1080"
-          className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-          data-ai-hint="city operations center"
-        />
       </div>
     </main>
   );
