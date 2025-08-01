@@ -19,14 +19,25 @@ import { Logo } from "@/components/icons/Logo";
 import { ALL_NAV_ITEMS, APP_NAME } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { LogOut, Settings, ChevronsLeft, ChevronsRight } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 export default function AppSidebarContent() {
   const pathname = usePathname();
   const { state, toggleSidebar, isMobile } = useSidebar();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const router = useRouter();
+
+  if (!user) {
+    return null; // or a loading skeleton
+  }
   
   const navItems = ALL_NAV_ITEMS.filter(item => item.roles.includes(user.role));
+
+  const handleLogout = () => {
+    logout();
+    router.push('/login');
+  };
 
   return (
     <>
@@ -92,12 +103,10 @@ export default function AppSidebarContent() {
                     Settings
                 </SidebarMenuButton>
             </Link>
-            <Link href="/login">
-                <SidebarMenuButton variant="ghost" className="w-full justify-start">
-                    <LogOut className="h-5 w-5" />
-                    Logout
-                </SidebarMenuButton>
-            </Link>
+            <SidebarMenuButton variant="ghost" className="w-full justify-start" onClick={handleLogout}>
+                <LogOut className="h-5 w-5" />
+                Logout
+            </SidebarMenuButton>
           </>
         ) : (
           <>
@@ -106,11 +115,9 @@ export default function AppSidebarContent() {
                 <Settings className="h-5 w-5" />
                 </SidebarMenuButton>
             </Link>
-            <Link href="/login">
-                <SidebarMenuButton variant="ghost" className="justify-center" tooltip="Logout">
-                <LogOut className="h-5 w-5" />
-                </SidebarMenuButton>
-            </Link>
+            <SidebarMenuButton variant="ghost" className="justify-center" tooltip="Logout" onClick={handleLogout}>
+              <LogOut className="h-5 w-5" />
+            </SidebarMenuButton>
              {!isMobile && (
                 <SidebarMenuButton variant="ghost" onClick={toggleSidebar} className="justify-center" tooltip="Expand Sidebar">
                     <ChevronsRight className="h-5 w-5" />

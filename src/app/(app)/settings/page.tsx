@@ -1,3 +1,6 @@
+
+'use client'
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -5,11 +8,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/context/AuthContext";
 import { Bell, KeyRound, User } from "lucide-react";
 
 export default function SettingsPage() {
     const { user } = useAuth();
+
+    if (!user) {
+        return <div>Loading...</div>
+    }
 
     return (
         <div className="space-y-6 max-w-4xl mx-auto">

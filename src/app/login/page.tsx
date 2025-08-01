@@ -1,3 +1,6 @@
+
+'use client'
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -5,8 +8,33 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Logo } from "@/components/icons/Logo";
 import { APP_NAME } from "@/lib/constants";
+import { useAuth } from "@/context/AuthContext";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const { login } = useAuth();
+  const router = useRouter();
+
+  const handleLogin = () => {
+    // In a real app, you'd get credentials from the form
+    const email = (document.getElementById('email') as HTMLInputElement).value;
+    
+    // Mock logic to determine role based on email
+    let role: 'admin' | 'supervisor' | 'dispatcher' = 'dispatcher';
+    if (email.includes('admin')) {
+      role = 'admin';
+    } else if (email.includes('supervisor')) {
+      role = 'supervisor';
+    }
+
+    login({
+      name: "Logged In User", // Replace with name from form/API
+      email: email,
+      role: role,
+    });
+    router.push('/dashboard');
+  };
+
   return (
     <main className="flex items-center justify-center min-h-screen bg-background p-4">
       <div className="w-full max-w-sm space-y-6">
@@ -20,12 +48,12 @@ export default function LoginPage() {
         <Card>
           <CardHeader>
             <CardTitle>Login</CardTitle>
-            <CardDescription>Use your authority-issued credentials.</CardDescription>
+            <CardDescription>Use your authority-issued credentials. <br /> Try <code className="bg-muted px-1 rounded-sm">admin@authority.dz</code></CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="m@example.com" required />
+              <Input id="email" type="email" placeholder="m@example.com" required defaultValue="admin@authority.dz" />
             </div>
             <div className="space-y-2">
               <div className="flex items-center">
@@ -34,13 +62,11 @@ export default function LoginPage() {
                   Forgot your password?
                 </Link>
               </div>
-              <Input id="password" type="password" required />
+              <Input id="password" type="password" required defaultValue="password" />
             </div>
-             <Link href="/dashboard" className="w-full">
-                <Button className="w-full">
-                    Login
-                </Button>
-            </Link>
+            <Button className="w-full" onClick={handleLogin}>
+                Login
+            </Button>
           </CardContent>
         </Card>
       </div>
