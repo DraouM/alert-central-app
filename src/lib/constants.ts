@@ -39,13 +39,6 @@ export const ALL_NAV_ITEMS: NavItem[] = [
     variant: "ghost",
     roles: ["admin"],
   },
-  {
-    title: "Settings",
-    href: "/settings",
-    icon: Settings,
-    variant: "ghost",
-    roles: ["admin", "supervisor", "dispatcher"],
-  },
 ];
 
 // Placeholder for a dynamic request, not for direct navigation
